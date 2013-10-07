@@ -17,7 +17,7 @@ public class GenerateTerrain : MonoBehaviour
 	public bool bOnce = false;
 	public int currentX, currentZ;
 	public Transform player;
-	public Vector3 lastPosN, lastPosNE, lastPosNW, tester;
+	public Vector3 lastPosN, lastPosNE, lastPosNW, tester, tester2, tester3, tester4;
 	void Start () 
 	{
 		//Make 2 perlin noise objects, one is used for the surface and the other for the caves
@@ -76,53 +76,124 @@ public class GenerateTerrain : MonoBehaviour
 		//Debug.Log ("Player Forward " + player.forward);
 		if(player.forward.x > 0.85f)
 		{
-			tester = lastPosN + new Vector3(128,0,0);
-			//Debug.Log ("North");	
+			tester = lastPosN + new Vector3(129,0,0);
+			tester2 = lastPosN + new Vector3(129, 0, 129);
+			tester3 = lastPosN + new Vector3(129, 0, -129);
+			Debug.Log ("North");	
 		}
 		if(player.forward.x < 0.85f && player.forward.x > 0.55f && player.forward.z > 0)
 		{
-			tester = lastPosN + new Vector3(128,0,128);
-			//Debug.Log ("NorthWest");	
+			tester = lastPosN + new Vector3(129,0,129);
+			tester2 = lastPosN + new Vector3(129, 0, 0);
+			tester3 = lastPosN + new Vector3(0, 0, 129);
+			Debug.Log ("NorthWest");	
 		}
 		if(player.forward.x < 0.85f && player.forward.x > 0.55f && player.forward.z < 0)
 		{
-			tester = lastPosN + new Vector3(128,0,-128);
-			//Debug.Log ("NorthEast");	
+			tester = lastPosN + new Vector3(129,0,-129);
+			tester2 = lastPosN + new Vector3(129, 0, 0);
+			tester3 = lastPosN + new Vector3(0, 0, -129);
+			Debug.Log ("NorthEast");	
 		}
 		if(player.forward.x < -0.85f)
 		{
-			tester = lastPosN + new Vector3(-128,0,0);
-			//Debug.Log ("South");	
+			tester = lastPosN + new Vector3(-129,0,0);
+			tester2 = lastPosN + new Vector3(-129, 0, 129);
+			tester3 = lastPosN + new Vector3(-129, 0, -129);
+			Debug.Log ("South");	
 		}
 		if(player.forward.x > -0.85f && player.forward.x < -0.55f && player.forward.z > 0)
 		{
-			tester = lastPosN + new Vector3(-128,0,128);
-			//Debug.Log ("SouthWest");	
+			tester = lastPosN + new Vector3(-129,0,129);
+			tester2 = lastPosN + new Vector3(-129, 0, 0);
+			tester3 = lastPosN + new Vector3(0,0,129);
+			Debug.Log ("SouthWest");	
 		}
 		if(player.forward.x > -0.85f && player.forward.x < -0.55f && player.forward.z < 0)
 		{
-			tester = lastPosN + new Vector3(-128,0,-128);
-			//Debug.Log ("SouthEast");	
+			tester = lastPosN + new Vector3(-129,0,-129);
+			tester2 = lastPosN + new Vector3(-129, 0, 0);
+			tester3 = lastPosN + new Vector3(0,0, -129);
+			Debug.Log ("SouthEast");	
 		}
 		if(player.forward.z > 0.85f)
 		{
-			tester = lastPosN + new Vector3(0,0,128);
-			//Debug.Log ("West");	
+			tester = lastPosN + new Vector3(0,0,129);
+			tester2 = lastPosN + new Vector3(-129,0,129);
+			tester3 = lastPosN + new Vector3(129,0,129);
+			Debug.Log ("West");	
 		}
 		if(player.forward.z < -0.85f)
 		{
-			tester = lastPosN + new Vector3(0,0,-128);
-			//Debug.Log ("East");	
+			tester = lastPosN + new Vector3(0,0,-129);
+			tester2 = lastPosN + new Vector3(-129,0,-129);
+			tester3 = lastPosN + new Vector3(129, 0, -129);
+			Debug.Log ("East");	
 		}
-		tester.y = 0;
-		Debug.DrawLine(tester, tester - new Vector3(0, 128, 0), Color.green);
-		if(Physics.Raycast (tester, tester - new Vector3(0, 128, 0), out hit))
+		tester.y = 128;
+		tester2.y = 128;
+		tester3.y = 128;
+		Debug.DrawLine(tester, tester - new Vector3(0, 512, 0), Color.green);
+		Debug.DrawLine(tester2, tester2 - new Vector3(0, 512, 0), Color.green);
+		Debug.DrawLine(tester3, tester3 - new Vector3(0, 512, 0), Color.green);
+		if(!Physics.Raycast (tester, tester - new Vector3(0, 512, 0), out hit))
 		{
-			Debug.DrawLine(tester, tester - new Vector3(0, 128, 0), Color.green);
-			//Debug.Log ("Hit1: " + hit.transform.GetComponent<ChunkData>().m_pos);
+			PerlinNoise m_surfacePerlin = new PerlinNoise(m_surfaceSeed);
+			m_voxelChunktemp = new VoxelChunk[1, 2, 1];
+			for(int x = 0; x<1; x++)
+			{
+				for (int y = 0; y<2; y++)
+				{
+					for(int z = 0; z< 1; z++)
+					{
+						Vector3 pos = new Vector3(tester.x/8, y*m_voxelHeight, tester.z/8);
+						m_voxelChunktemp[x, y, z] = new VoxelChunk(pos, m_voxelWidth, m_voxelHeight, m_voxelLength, m_surfaceLevel);
+						m_voxelChunktemp[x, y, z].CreateVoxels (m_surfacePerlin);
+						m_voxelChunktemp[x, y, z].CreateMesh (m_material);
+						
+					}
+				}
+			}
 		}
-		
-		if(Physics.Raycast (tester*2, tester*2 - new Vector3(0, 128, 0), out hit))
+		if(!Physics.Raycast (tester2, tester2 - new Vector3(0, 512, 0), out hit))
+		{
+			PerlinNoise m_surfacePerlin = new PerlinNoise(m_surfaceSeed);
+			m_voxelChunktemp = new VoxelChunk[1, 2, 1];
+			for(int x = 0; x<1; x++)
+			{
+				for (int y = 0; y<2; y++)
+				{
+					for(int z = 0; z< 1; z++)
+					{
+						Vector3 pos = new Vector3(tester2.x/8, y*m_voxelHeight, tester2.z/8);
+						m_voxelChunktemp[x, y, z] = new VoxelChunk(pos, m_voxelWidth, m_voxelHeight, m_voxelLength, m_surfaceLevel);
+						m_voxelChunktemp[x, y, z].CreateVoxels (m_surfacePerlin);
+						m_voxelChunktemp[x, y, z].CreateMesh (m_material);
+						
+					}
+				}
+			}
+		}
+		if(!Physics.Raycast (tester3, tester3 - new Vector3(0, 512, 0), out hit))
+		{
+			PerlinNoise m_surfacePerlin = new PerlinNoise(m_surfaceSeed);
+			m_voxelChunktemp = new VoxelChunk[1, 2, 1];
+			for(int x = 0; x<1; x++)
+			{
+				for (int y = 0; y<2; y++)
+				{
+					for(int z = 0; z< 1; z++)
+					{
+						Vector3 pos = new Vector3(tester3.x/8, y*m_voxelHeight, tester3.z/8);
+						m_voxelChunktemp[x, y, z] = new VoxelChunk(pos, m_voxelWidth, m_voxelHeight, m_voxelLength, m_surfaceLevel);
+						m_voxelChunktemp[x, y, z].CreateVoxels (m_surfacePerlin);
+						m_voxelChunktemp[x, y, z].CreateMesh (m_material);
+						
+					}
+				}
+			}
+		}
+	/*	if(Physics.Raycast (tester*2, tester*2 - new Vector3(0, 128, 0), out hit))
 		{
 			Debug.DrawLine(tester*2, tester*2 - new Vector3(0, 128, 0), Color.red);
 			//Debug.Log ("N Trafilem w: " + hit.transform.GetComponent<ChunkData>().m_pos);
@@ -148,7 +219,7 @@ public class GenerateTerrain : MonoBehaviour
 				}
 			}
 		}
-		
+		*/
 		
 		/*if(player.localPosition.x > currentX)
 		{
