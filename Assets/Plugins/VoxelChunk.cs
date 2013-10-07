@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
-
 public class VoxelChunk
 {
 	float[,,] m_voxels;
 	Vector3[,,] m_normals;
 	Vector3 m_pos;
+	Vector3 rowNumber;
 	GameObject m_mesh;
 	float m_surfaceLevel;
 	
@@ -99,7 +99,7 @@ public class VoxelChunk
 				for(int y = 0; y < h; y++)
 				{
 					float worldY = y+m_pos.y-m_surfaceLevel;
-					
+				
 					//If we take the heigth value and add the world
 					//the voxels will change from positiove to negative where the surface cuts through the voxel chunk
 					m_voxels[x,y,z] = Mathf.Clamp(ht + worldY , -1.0f, 1.0f);
