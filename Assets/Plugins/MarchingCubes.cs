@@ -51,7 +51,7 @@ static public class MarchingCubes
 
 		mesh.vertices = verts.ToArray();		
 		mesh.triangles = index.ToArray();
-		
+		mesh.uv = new Vector2[mesh.vertices.Length];
 		return mesh;
 	}
 	
