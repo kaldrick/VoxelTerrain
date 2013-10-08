@@ -6,6 +6,7 @@ public class ChunkData : MonoBehaviour {
 	public GameObject player;
 	public bool bOnce = false;
 	public int i = 0;
+	public bool bUsed = false;
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find ("First Person Controller");
@@ -13,19 +14,22 @@ public class ChunkData : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(((player.GetComponent<PlayerData>().centerChunkPos.x - m_pos.x < 9) && (player.GetComponent<PlayerData>().centerChunkPos.x - m_pos.x > -9)) && ((player.GetComponent<PlayerData>().centerChunkPos.z - m_pos.z < 9) && (player.GetComponent<PlayerData>().centerChunkPos.z - m_pos.z > -9)))
+		if(!bUsed)
 		{
-			//Debug.Log ("Name: " + gameObject.name  + " vect difference " + (player.GetComponent<PlayerData>().lastPosN - m_pos));
-			if(!player.GetComponent<PlayerData>().chunks.Contains(this))
+			if(((player.GetComponent<PlayerData>().centerChunkPos.x - m_pos.x < 9*player.GetComponent<PlayerData>().uncoverArea) && (player.GetComponent<PlayerData>().centerChunkPos.x - m_pos.x > -9*player.GetComponent<PlayerData>().uncoverArea)) && ((player.GetComponent<PlayerData>().centerChunkPos.z - m_pos.z < 9*player.GetComponent<PlayerData>().uncoverArea) && (player.GetComponent<PlayerData>().centerChunkPos.z - m_pos.z > -9*player.GetComponent<PlayerData>().uncoverArea)))
 			{
-				player.GetComponent<PlayerData>().chunks.Add (this);
+				//Debug.Log ("Name: " + gameObject.name  + " vect difference " + (player.GetComponent<PlayerData>().lastPosN - m_pos));
+				if(!player.GetComponent<PlayerData>().chunks.Contains(this))
+				{
+					player.GetComponent<PlayerData>().chunks.Add (this);
+				}
 			}
-		}
-		else
-		{
-			if(player.GetComponent<PlayerData>().chunks.Contains(this))
+			else
 			{
-				player.GetComponent<PlayerData>().chunks.Remove (this);
+				if(player.GetComponent<PlayerData>().chunks.Contains(this))
+				{
+					player.GetComponent<PlayerData>().chunks.Remove (this);
+				}
 			}
 		}
 	}

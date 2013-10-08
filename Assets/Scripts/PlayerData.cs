@@ -7,6 +7,7 @@ public class PlayerData : MonoBehaviour {
 	public List<ChunkData> chunks;
 	public GenerateTerrain terrain;
 	public enum Dir { North, NorthEast, NorthWest, West, East, South, SouthEast, SouthWest };
+	public int uncoverArea = 1;
 	public Dir currentDir;
 	VoxelChunk m_voxelChunktemp; 
 	//public System.Predicate<ChunkData> chunkPredicate = new System.Predicate<ChunkData>(checkChunk);
@@ -16,85 +17,88 @@ public class PlayerData : MonoBehaviour {
 	}
 	void checkChunk(ChunkData chunk)
 	{
-		//N
-		if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x+8).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z).ToString()))
+		for(int i = 0; i <= uncoverArea; i++)
 		{
-			PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
-			Vector3 pos = new Vector3(chunk.m_pos.x+9, chunk.m_pos.y+1, chunk.m_pos.z+1);
-			m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
-			m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
-			m_voxelChunktemp.CreateMesh (terrain.m_material);
-			//chunk.bOnce = true;
-		}
-		//NW
-		if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x+8).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z + 8).ToString()))
-		{
-			PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
-			Vector3 pos = new Vector3(chunk.m_pos.x+9, chunk.m_pos.y+1, chunk.m_pos.z+9);
-			m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
-			m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
-			m_voxelChunktemp.CreateMesh (terrain.m_material);
-			//chunk.bOnce = true;
-		}
-		//NE
-		if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x+8).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z - 8).ToString()))
-		{
-			PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
-			Vector3 pos = new Vector3(chunk.m_pos.x+9, chunk.m_pos.y+1, chunk.m_pos.z-7);
-			m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
-			m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
-			m_voxelChunktemp.CreateMesh (terrain.m_material);
-			//chunk.bOnce = true;
-		}
-		//S
-		if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x-8).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z).ToString()))
-		{
-			PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
-			Vector3 pos = new Vector3(chunk.m_pos.x-7, chunk.m_pos.y+1, chunk.m_pos.z+1);
-			m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
-			m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
-			m_voxelChunktemp.CreateMesh (terrain.m_material);
-			//chunk.bOnce = true;
-		}
-		//SW
-		if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x-8).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z + 8).ToString()))
-		{
-			PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
-			Vector3 pos = new Vector3(chunk.m_pos.x-7, chunk.m_pos.y+1, chunk.m_pos.z+9);
-			m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
-			m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
-			m_voxelChunktemp.CreateMesh (terrain.m_material);
-			//chunk.bOnce = true;
-		}
-		//SE
-		if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x-8).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z - 8).ToString()))
-		{
-			PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
-			Vector3 pos = new Vector3(chunk.m_pos.x-7, chunk.m_pos.y+1, chunk.m_pos.z-7);
-			m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
-			m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
-			m_voxelChunktemp.CreateMesh (terrain.m_material);
-			//chunk.bOnce = true;
-		}
-		//W
-		if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z + 8).ToString()))
-		{
-			PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
-			Vector3 pos = new Vector3(chunk.m_pos.x+1, chunk.m_pos.y+1, chunk.m_pos.z+9);
-			m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
-			m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
-			m_voxelChunktemp.CreateMesh (terrain.m_material);
-			//chunk.bOnce = true;
-		}
-		//E
-		if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z - 8).ToString()))
-		{
-			PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
-			Vector3 pos = new Vector3(chunk.m_pos.x+1, chunk.m_pos.y+1, chunk.m_pos.z-7);
-			m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
-			m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
-			m_voxelChunktemp.CreateMesh (terrain.m_material);
-			//chunk.bOnce = true;
+			//N
+			if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x+(i*8)).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z).ToString()))
+			{
+				PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
+				Vector3 pos = new Vector3(chunk.m_pos.x+8*i+1, chunk.m_pos.y+1, chunk.m_pos.z+1);
+				m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
+				m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
+				m_voxelChunktemp.CreateMesh (terrain.m_material);
+				//chunk.bOnce = true;
+			}
+			//NW
+			if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x+8*i).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z + 8*i).ToString()))
+			{
+				PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
+				Vector3 pos = new Vector3(chunk.m_pos.x+8*i+1, chunk.m_pos.y+1, chunk.m_pos.z+8*i+1);
+				m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
+				m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
+				m_voxelChunktemp.CreateMesh (terrain.m_material);
+				//chunk.bOnce = true;
+			}
+			//NE
+			if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x+8*i).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z - 8*i).ToString()))
+			{
+				PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
+				Vector3 pos = new Vector3(chunk.m_pos.x+8*i+1, chunk.m_pos.y+1, chunk.m_pos.z-8*i+1);
+				m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
+				m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
+				m_voxelChunktemp.CreateMesh (terrain.m_material);
+				//chunk.bOnce = true;
+			}
+			//S
+			if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x-8*i).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z).ToString()))
+			{
+				PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
+				Vector3 pos = new Vector3(chunk.m_pos.x-8*i+1, chunk.m_pos.y+1, chunk.m_pos.z+1);
+				m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
+				m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
+				m_voxelChunktemp.CreateMesh (terrain.m_material);
+				//chunk.bOnce = true;
+			}
+			//SW
+			if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x-8*i).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z + 8*i).ToString()))
+			{
+				PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
+				Vector3 pos = new Vector3(chunk.m_pos.x-8*i+1, chunk.m_pos.y+1, chunk.m_pos.z+8*i+1);
+				m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
+				m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
+				m_voxelChunktemp.CreateMesh (terrain.m_material);
+				//chunk.bOnce = true;
+			}
+			//SE
+			if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x-8*i).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z - 8*i).ToString()))
+			{
+				PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
+				Vector3 pos = new Vector3(chunk.m_pos.x-8*i+1, chunk.m_pos.y+1, chunk.m_pos.z-8*i+1);
+				m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
+				m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
+				m_voxelChunktemp.CreateMesh (terrain.m_material);
+				//chunk.bOnce = true;
+			}
+			//W
+			if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z + 8*i).ToString()))
+			{
+				PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
+				Vector3 pos = new Vector3(chunk.m_pos.x+1, chunk.m_pos.y+1, chunk.m_pos.z+8*i+1);
+				m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
+				m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
+				m_voxelChunktemp.CreateMesh (terrain.m_material);
+				//chunk.bOnce = true;
+			}
+			//E
+			if(!GameObject.Find ("Voxel Mesh " + (chunk.m_pos.x).ToString() + " " + (chunk.m_pos.y).ToString() + " " + (chunk.m_pos.z - 8*i).ToString()))
+			{
+				PerlinNoise m_surfacePerlin = new PerlinNoise(terrain.m_surfaceSeed);
+				Vector3 pos = new Vector3(chunk.m_pos.x+1, chunk.m_pos.y+1, chunk.m_pos.z-8*i+1);
+				m_voxelChunktemp = new VoxelChunk(pos, terrain.m_voxelWidth, terrain.m_voxelHeight, terrain.m_voxelLength, terrain.m_surfaceLevel);
+				m_voxelChunktemp.CreateVoxels (m_surfacePerlin);
+				m_voxelChunktemp.CreateMesh (terrain.m_material);
+				//chunk.bOnce = true;
+			}
 		}
 		//Debug.Log ("Difference: " + (chunk.m_pos - centerChunkPos) + " Chunk name: " + chunk.name + " Current Dir: " + currentDir);
 		/*if((((chunk.m_pos.z - centerChunkPos.z == -8 || chunk.m_pos.z - centerChunkPos.z == 8)  && chunk.m_pos.x - centerChunkPos.x == 0) || (chunk.m_pos.x - centerChunkPos.x == 0 && chunk.m_pos.z - centerChunkPos.z == 0)) && currentDir == Dir.North)
@@ -155,6 +159,8 @@ public class PlayerData : MonoBehaviour {
 			}
 		}*/
 		//return chunk;	
+		chunk.bUsed = true;
+		chunks.Remove (chunk);
 	}
 	// Update is called once per frame
 	void Update () {
@@ -165,7 +171,8 @@ public class PlayerData : MonoBehaviour {
 			centerChunkPos = hit.transform.GetComponent<ChunkData>().m_pos;
 			Debug.Log ("ZMIENIAM" + centerChunkPos);
 		}
-		if(chunks.Count < 18)
+		Debug.Log (chunks.Count);
+		if(chunks.Count < 18 * (uncoverArea+0.5f))
 		{
 			chunks.ForEach(checkChunk);	
 		}
